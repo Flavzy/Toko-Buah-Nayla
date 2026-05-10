@@ -1,0 +1,11 @@
+/node_modules
+/vendor
+/public/build
+.git
+.env
+Dockerfile
+railway.json
+.nixpacks
+.phpunit.result.cache
+tests
+storage/*.key
