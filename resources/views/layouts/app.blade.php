@@ -15,9 +15,9 @@
             <a href="{{ route('home') }}" style="font-size: 16px; font-weight: 600;"><i class="fa-solid fa-apple-whole"></i></a>
             <div class="flex items-center">
                 <a href="{{ route('products.index') }}">Store</a>
-                <a href="#">Macam Buah</a>
-                <a href="#">Es Buah</a>
-                <a href="#">Tentang Kami</a>
+                <a href="{{ route('home') }}#kategori">Macam Buah</a>
+                <a href="{{ route('products.index', ['category' => 'es-buah']) }}">Es Buah</a>
+                <a href="#footer">Tentang Kami</a>
             </div>
             <div class="flex items-center gap-4">
                 <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
@@ -59,7 +59,7 @@
     @yield('content')
 
     <!-- Footer -->
-    <footer class="site-footer">
+    <footer id="footer" class="site-footer">
         <div class="container">
             <div class="grid grid-cols-4 gap-6 mb-8">
                 <div>
