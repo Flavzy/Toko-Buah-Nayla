@@ -18,8 +18,9 @@ RUN apt-get update && apt-get install -y \
     && install-php-extensions gd pdo_mysql mbstring exif pcntl bcmath xml zip \
     && rm -rf /var/lib/apt/lists/*
 
-# Fix: Ensure only mpm_prefork is loaded (Fix AH00534)
-RUN a2dismod mpm_event mpm_worker || true \
+# AGGRESSIVE FIX: Force disable mpm_event and mpm_worker by removing their files
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.load /etc/apache2/mods-enabled/mpm_event.conf \
+    && rm -f /etc/apache2/mods-enabled/mpm_worker.load /etc/apache2/mods-enabled/mpm_worker.conf \
     && a2enmod mpm_prefork rewrite
 
 # Set working directory
@@ -41,8 +42,9 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Handle dynamic PORT from Railway
-RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+# Handle dynamic PORT from Railway (lebih spesifik)
+RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf \
+    && sed -i 's/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/g' /etc/apache2/sites-available/000-default.conf
 
 EXPOSE 80
 
