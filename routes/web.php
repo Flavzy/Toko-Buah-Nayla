@@ -58,6 +58,8 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::resource('products', AdminProductController::class)->except(['show']);
 
         // Orders
+        Route::get('orders/create', [AdminOrderController::class, 'create'])->name('orders.create');
+        Route::post('orders', [AdminOrderController::class, 'store'])->name('orders.store');
         Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
         Route::get('orders/scan', [AdminOrderController::class, 'scan'])->name('orders.scan');
         Route::get('orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');

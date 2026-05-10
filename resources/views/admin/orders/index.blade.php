@@ -6,6 +6,7 @@
 <div class="card">
     <div class="flex justify-between items-center mb-6">
         <h2 class="display-md" style="font-size: 20px;">Daftar Pesanan</h2>
+        <a href="{{ route('admin.orders.create') }}" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">+ Buat Pesanan Toko</a>
     </div>
 
     <!-- Filter & Search -->
