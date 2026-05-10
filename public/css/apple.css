@@ -100,16 +100,28 @@ a {
 /* Nav */
 .global-nav {
     background-color: var(--surface-black);
-    height: 44px;
+    min-height: 48px;
     display: flex;
     align-items: center;
     color: var(--body-on-dark);
     font-size: 12px;
     letter-spacing: -0.12px;
+    position: relative;
+    z-index: 100;
+}
+.global-nav .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.global-nav .nav-links {
+    display: flex;
+    align-items: center;
 }
 .global-nav a {
     color: var(--body-on-dark);
-    padding: 0 16px;
+    padding: 0 12px;
     opacity: 0.8;
     transition: opacity 0.2s;
 }
@@ -117,17 +129,85 @@ a {
     opacity: 1;
 }
 
+/* Mobile Menu Toggle */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none !important; 
+    }
+    .nav-toggle {
+        display: block;
+    }
+    
+    .global-nav.mobile-active .nav-links {
+        display: flex !important;
+        flex-direction: column;
+        position: fixed;
+        top: 48px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: black;
+        padding: 40px 24px;
+        gap: 24px;
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+    .global-nav.mobile-active .nav-links a {
+        font-size: 28px;
+        font-weight: 600;
+        padding: 0;
+    }
+}
+
 .sub-nav {
     background-color: rgba(245, 245, 247, 0.8);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    height: 52px;
+    min-height: 52px;
     position: sticky;
     top: 0;
     z-index: 50;
     border-bottom: 1px solid rgba(0,0,0,0.05);
     display: flex;
     align-items: center;
+}
+.sub-nav .nav-scroll {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 10px 0;
+    width: 100%;
+}
+.sub-nav .nav-scroll::-webkit-scrollbar {
+    display: none;
+}
+.sub-nav .nav-scroll a {
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .sub-nav .container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 12px;
+        padding-bottom: 8px;
+    }
+    .sub-nav .tagline {
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
 }
 
 /* Buttons */

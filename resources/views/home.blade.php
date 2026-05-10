@@ -26,7 +26,7 @@
             <p class="tagline text-muted">Buah pilihan dengan kualitas premium minggu ini.</p>
         </div>
 
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             @foreach($featuredProducts as $product)
                 <div class="product-card text-center flex-col items-center">
                     <a href="{{ route('products.show', $product->slug) }}">
@@ -59,7 +59,7 @@
             <p class="tagline text-muted">Dari buah utuh hingga sajian segar.</p>
         </div>
 
-        <div class="grid grid-cols-4 gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             @foreach($categories as $category)
                 <a href="{{ route('products.index', ['category' => $category->slug]) }}" class="product-card text-center" style="display:block;">
                     @if($category->image)

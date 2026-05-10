@@ -5,9 +5,11 @@
 @section('content')
 <!-- Sub Nav Frosted -->
 <div class="sub-nav">
-    <div class="container flex justify-between items-center w-full">
-        <h2 class="tagline">Store</h2>
-        <div class="flex gap-4">
+    <div class="container w-full">
+        <div class="flex justify-between items-center w-full mb-2 sm:mb-0">
+            <h2 class="tagline">Store</h2>
+        </div>
+        <div class="nav-scroll">
             @foreach($categories as $cat)
                 <a href="{{ route('products.index', ['category' => $cat->slug]) }}" style="font-size: 14px; {{ request('category') == $cat->slug ? 'font-weight:600; color:var(--ink);' : 'color:var(--ink-muted-80);' }}">{{ $cat->name }}</a>
             @endforeach
@@ -20,24 +22,26 @@
 
 <div style="background-color: var(--canvas-parchment); min-height: 80vh; padding-bottom: 80px;">
     <div class="container pt-8">
-        <div class="flex justify-between items-center mb-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
             <h1 class="display-lg">
                 @if(request('category'))
                     Kategori: {{ $categories->where('slug', request('category'))->first()->name ?? 'Produk' }}
                 @elseif(request('search'))
                     Pencarian: "{{ request('search') }}"
                 @else
-                    Semua Produk. <span style="color:var(--ink-muted-48);">Segar untuk Anda.</span>
+                    Semua Produk. <span style="color:var(--ink-muted-48); display: block; font-size: 0.6em; margin-top: 4px;">Segar untuk Anda.</span>
                 @endif
             </h1>
 
             <!-- Search & Filter -->
-            <form action="{{ route('products.index') }}" method="GET" class="flex gap-4 items-center">
+            <form action="{{ route('products.index') }}" method="GET" class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                 @if(request('category'))
                     <input type="hidden" name="category" value="{{ request('category') }}">
                 @endif
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari buah..." class="form-input pill" style="width: 250px;">
-                <select name="sort" onchange="this.form.submit()" class="form-input pill" style="width: auto; padding-right: 32px;">
+                <div class="relative w-full sm:w-[250px]">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari buah..." class="form-input pill w-full">
+                </div>
+                <select name="sort" onchange="this.form.submit()" class="form-input pill w-full sm:w-auto" style="padding-right: 32px;">
                     <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Terbaru</option>
                     <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Harga: Rendah ke Tinggi</option>
                     <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Harga: Tinggi ke Rendah</option>

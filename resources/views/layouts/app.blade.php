@@ -10,40 +10,69 @@
 </head>
 <body>
     <!-- Global Nav -->
-    <nav class="global-nav">
-        <div class="container flex justify-between items-center w-full">
-            <a href="{{ route('home') }}" style="font-size: 16px; font-weight: 600;"><i class="fa-solid fa-apple-whole"></i></a>
-            <div class="flex items-center">
+    <nav class="global-nav" id="global-nav">
+        <div class="container nav-container">
+            <a href="{{ route('home') }}" style="font-size: 18px; font-weight: 600;"><i class="fa-solid fa-apple-whole"></i></a>
+            
+            <!-- Mobile Toggle -->
+            <button class="nav-toggle" id="nav-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="nav-links" id="nav-links">
                 <a href="{{ route('products.index') }}">Store</a>
                 <a href="{{ route('home') }}#kategori">Macam Buah</a>
                 <a href="{{ route('products.index', ['category' => 'es-buah']) }}">Es Buah</a>
                 <a href="#footer">Tentang Kami</a>
-            </div>
-            <div class="flex items-center gap-4">
-                <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
-                <a href="{{ route('cart.index') }}">
-                    <i class="fa-solid fa-bag-shopping"></i>
-                    @php $cartCount = collect(session('cart', []))->sum('quantity'); @endphp
-                    @if($cartCount > 0)
-                        <span style="background:var(--primary); color:white; border-radius:50%; padding:2px 6px; font-size:10px; margin-left:4px;">{{ $cartCount }}</span>
-                    @endif
-                </a>
-                @auth
-                    @if(auth()->user()->isAdmin())
-                        <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                
+                <div class="flex items-center gap-4 ml-4" style="border-left: 1px solid rgba(255,255,255,0.2); padding-left: 16px;">
+                    <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+                    <a href="{{ route('cart.index') }}">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        @php $cartCount = collect(session('cart', []))->sum('quantity'); @endphp
+                        @if($cartCount > 0)
+                            <span style="background:var(--primary); color:white; border-radius:50%; padding:2px 6px; font-size:10px; margin-left:4px;">{{ $cartCount }}</span>
+                        @endif
+                    </a>
+                    @auth
+                        @if(auth()->user()->isAdmin())
+                            <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                        @else
+                            <a href="{{ route('orders.index') }}">Pesanan</a>
+                        @endif
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="btn" style="background:transparent; color:var(--body-on-dark); font-size:12px; padding:0 16px;">Logout</button>
+                        </form>
                     @else
-                        <a href="{{ route('orders.index') }}">Pesanan</a>
-                    @endif
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="btn" style="background:transparent; color:var(--body-on-dark); font-size:12px; padding:0 16px;">Logout</button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}">Sign In</a>
-                @endauth
+                        <a href="{{ route('login') }}">Sign In</a>
+                    @endauth
+                </div>
             </div>
         </div>
     </nav>
+
+    <script>
+        document.getElementById('nav-toggle').addEventListener('click', function() {
+            document.getElementById('global-nav').classList.toggle('mobile-active');
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close menu when clicking links
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('global-nav').classList.remove('mobile-active');
+                document.getElementById('nav-toggle').querySelector('i').classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+    </script>
 
     @if(session('success'))
         <div style="background: #10b981; color: white; text-align: center; padding: 12px; font-size: 14px;">
