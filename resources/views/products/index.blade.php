@@ -50,7 +50,7 @@
         </div>
 
         @if($products->count() > 0)
-            <div class="grid grid-cols-4 gap-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                 @foreach($products as $product)
                     <div class="product-card flex-col">
                         <a href="{{ route('products.show', $product->slug) }}" class="flex-col" style="flex: 1;">

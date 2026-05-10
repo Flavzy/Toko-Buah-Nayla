@@ -26,7 +26,7 @@
             <p class="tagline text-muted">Buah pilihan dengan kualitas premium minggu ini.</p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             @foreach($featuredProducts as $product)
                 <div class="product-card text-center flex-col items-center">
                     <a href="{{ route('products.show', $product->slug) }}">

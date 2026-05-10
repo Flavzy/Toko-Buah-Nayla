@@ -276,24 +276,27 @@ a {
 .product-card {
     background-color: var(--canvas);
     border: 1px solid var(--hairline);
-    border-radius: 18px;
-    padding: 24px;
-    transition: border-color 0.2s;
+    border-radius: 12px;
+    padding: 16px;
+    transition: border-color 0.2s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
 }
 .product-card:hover {
     border-color: #d2d2d7;
+    transform: translateY(-2px);
 }
 
 .product-image {
     width: 100%;
     aspect-ratio: 1;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 8px;
-    margin-bottom: 16px;
-    background-color: #f8f8f8;
+    margin-bottom: 12px;
+    background-color: transparent;
 }
 .product-image-shadow {
-    filter: drop-shadow(3px 5px 30px rgba(0, 0, 0, 0.22));
+    filter: drop-shadow(2px 4px 12px rgba(0, 0, 0, 0.1));
 }
 
 /* Footer */
