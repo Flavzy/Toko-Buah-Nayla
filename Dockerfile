@@ -18,10 +18,8 @@ RUN apt-get update && apt-get install -y \
     && install-php-extensions gd pdo_mysql mbstring exif pcntl bcmath xml zip \
     && rm -rf /var/lib/apt/lists/*
 
-# AGGRESSIVE FIX: Force disable mpm_event and mpm_worker by removing their files
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.load /etc/apache2/mods-enabled/mpm_event.conf \
-    && rm -f /etc/apache2/mods-enabled/mpm_worker.load /etc/apache2/mods-enabled/mpm_worker.conf \
-    && a2enmod mpm_prefork rewrite
+# Enable rewrite module
+RUN a2enmod rewrite
 
 # Set working directory
 WORKDIR /var/www/html
@@ -42,10 +40,11 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Handle dynamic PORT from Railway (lebih spesifik)
+# Handle dynamic PORT from Railway
 RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf \
     && sed -i 's/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/g' /etc/apache2/sites-available/000-default.conf
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+# RUNTIME FIX: Disable conflicting MPMs right before starting Apache
+CMD ["sh", "-c", "a2dismod mpm_event mpm_worker || true && apache2-foreground"]
