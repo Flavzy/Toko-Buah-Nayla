@@ -7,32 +7,16 @@ COPY . .
 RUN npm run build
 
 # Stage 2: PHP Application
-FROM php:8.3-apache
+FROM php:8.4-apache
 
-# Install system dependencies
+# Install helper untuk instalasi ekstensi PHP yang lebih cepat & stabil
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
+# Install system dependencies dan PHP extensions dalam satu langkah efisien
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    git \
-    libonig-dev \
-    libxml2-dev \
+    zip unzip git \
+    && install-php-extensions gd pdo_mysql mbstring exif pcntl bcmath xml zip \
     && rm -rf /var/lib/apt/lists/*
-
-# Install PHP extensions
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) \
-    gd \
-    pdo_mysql \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath \
-    xml \
-    zip
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
@@ -46,6 +30,7 @@ COPY --from=asset-builder /app/public/build ./public/build
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Set permissions
