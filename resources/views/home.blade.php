@@ -26,10 +26,10 @@
             <p class="tagline text-muted">Buah pilihan dengan kualitas premium minggu ini.</p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6">
             @foreach($featuredProducts as $product)
-                <div class="product-card text-center flex-col items-center">
-                    <a href="{{ route('products.show', $product->slug) }}">
+                <div class="product-card text-center">
+                    <a href="{{ route('products.show', $product->slug) }}" class="flex flex-col items-center" style="flex: 1;">
                         @if($product->image)
                             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="product-image product-image-shadow">
                         @else
@@ -43,7 +43,7 @@
                     <form action="{{ route('cart.add', $product->id) }}" method="POST" class="mt-6 w-full">
                         @csrf
                         <input type="hidden" name="quantity" value="1">
-                        <button type="submit" class="btn btn-primary w-full" style="font-size: 14px; padding: 8px;">Tambah ke Keranjang</button>
+                        <button type="submit" class="btn btn-primary w-full" style="font-size: 13px; padding: 8px;">Tambah ke Keranjang</button>
                     </form>
                 </div>
             @endforeach

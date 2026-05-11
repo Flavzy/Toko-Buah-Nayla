@@ -50,10 +50,10 @@
         </div>
 
         @if($products->count() > 0)
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
                 @foreach($products as $product)
-                    <div class="product-card flex-col">
-                        <a href="{{ route('products.show', $product->slug) }}" class="flex-col" style="flex: 1;">
+                    <div class="product-card">
+                        <a href="{{ route('products.show', $product->slug) }}" class="flex-col" style="flex: 1; display: flex;">
                             @if($product->image)
                                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="product-image">
                             @else
@@ -62,13 +62,13 @@
                                 </div>
                             @endif
                             <h3 class="body-strong" style="color:var(--ink);">{{ $product->name }}</h3>
-                            <p class="caption mt-2 text-muted" style="flex:1;">{{ Str::limit($product->description, 60) }}</p>
+                            <p class="caption mt-2 text-muted" style="flex: 1;">{{ Str::limit($product->description, 50) }}</p>
                             <p class="mt-4" style="color:var(--ink); font-weight:600;">{{ $product->formatted_price }} <span class="caption" style="font-weight:400;">/ {{ $product->unit }}</span></p>
                         </a>
                         <form action="{{ route('cart.add', $product->id) }}" method="POST" class="mt-4">
                             @csrf
                             <input type="hidden" name="quantity" value="1">
-                            <button type="submit" class="btn btn-primary w-full" style="font-size: 14px; padding: 8px;">Tambah</button>
+                            <button type="submit" class="btn btn-primary w-full" style="font-size: 13px; padding: 8px;">Tambah</button>
                         </form>
                     </div>
                 @endforeach
